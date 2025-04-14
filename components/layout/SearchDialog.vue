@@ -7,10 +7,11 @@
       <VisuallyHidden as-child>
         <UiDialogDescription aria-describedby="undefined" />
       </VisuallyHidden>
-      <UiCommand v-model:search-term="input" class="h-svh sm:h-[350px]">
-        <UiCommandInput
+      <UiCommand class="h-svh sm:h-[350px]">
+        <UiCommandInputOnly
+          v-model="input"
           :loading="searchLoading"
-          :placeholder="placeholderDetailed"
+          :placeholder="$t(placeholderDetailed)"
           @keydown.enter="handleEnter"
           @keydown.down="handleNavigate(1)"
           @keydown.up="handleNavigate(-1)"
@@ -32,26 +33,25 @@
             <UiCommandGroup v-if="darkModeToggle" heading="Theme" class="p-1.5">
               <UiCommandItem value="light" @click="colorMode.preference = 'light'">
                 <Icon name="lucide:sun" class="mr-2 size-4" />
-                <span>Light</span>
+                <span>{{ $t('Light') }}</span>
               </UiCommandItem>
               <UiCommandItem value="dark" @click="colorMode.preference = 'dark'">
                 <Icon name="lucide:moon" class="mr-2 size-4" />
-                <span>Dark</span>
+                <span>{{ $t('Dark') }}</span>
               </UiCommandItem>
               <UiCommandItem value="system" @click="colorMode.preference = 'auto'">
                 <Icon name="lucide:monitor" class="mr-2 size-4" />
-                <span>System</span>
+                <span>{{ $t('System') }}</span>
               </UiCommandItem>
             </UiCommandGroup>
           </template>
-
           <div v-else-if="searchResult?.length" class="p-1.5">
             <NuxtLink
               v-for="(item, i) in searchResult"
               :id="i"
               :key="item.id"
               :to="item.id"
-              class="flex select-none rounded-md p-2 hover:cursor-pointer hover:bg-muted"
+              class="hover:bg-muted flex select-none rounded-md p-2 hover:cursor-pointer"
               :class="[i === activeSelect && 'bg-muted']"
               @click="open = false; activeSelect = i;"
             >
@@ -60,17 +60,16 @@
 
               <span v-for="(subtitle, j) in item.titles" :key="`${subtitle}${j}`" class="flex shrink-0 self-center">
                 {{ subtitle }}
-                <Icon name="lucide:chevron-right" class="mx-0.5 self-center text-muted-foreground" />
+                <Icon name="lucide:chevron-right" class="text-muted-foreground mx-0.5 self-center" />
               </span>
               <span class="shrink-0 self-center">
                 {{ item.title }}
               </span>
-              <span class="ml-2 self-center truncate text-xs text-muted-foreground" v-html="getHighlightedContent(item.content)" />
+              <span class="text-muted-foreground ml-2 self-center truncate text-xs" v-html="getHighlightedContent(item.content)" />
             </NuxtLink>
           </div>
-
-          <div v-else class="pt-4 text-center text-muted-foreground">
-            No results found.
+          <div v-else class="text-muted-foreground pt-4 text-center">
+            {{ $t('No results found.') }}
           </div>
         </UiCommandList>
       </UiCommand>
@@ -79,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { VisuallyHidden } from 'radix-vue';
+import { VisuallyHidden } from 'reka-ui';
 
 const { darkModeToggle } = useConfig().value.header;
 
@@ -104,6 +103,9 @@ watch([Meta_K, Ctrl_K], (v) => {
 const input = ref('');
 const searchResult = ref();
 const searchLoading = ref(false);
+
+const { localizeSearchResult } = useI18nDocs();
+
 watch(
   input,
   async (v) => {
@@ -112,7 +114,9 @@ watch(
       return;
 
     searchLoading.value = true;
-    searchResult.value = (await searchContent(v)).value;
+    const result = (await searchContent(v)).value;
+
+    searchResult.value = localizeSearchResult(result);
     searchLoading.value = false;
   },
 );
@@ -122,7 +126,8 @@ function getHighlightedContent(text: string) {
 }
 
 const { navKeyFromPath } = useContentHelpers();
-const { navigation } = useContent();
+const { navigation } = useI18nDocs();
+
 function getItemIcon(path: string) {
   return navKeyFromPath(path, 'icon', navigation.value);
 }

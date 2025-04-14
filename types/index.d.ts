@@ -35,6 +35,11 @@ interface DefaultConfig {
     };
     showTitleInMobile: boolean;
     darkModeToggle: boolean;
+    languageSwitcher: {
+      enable: boolean;
+      triggerType: 'icon' | 'text';
+      dropdownType: 'select' | 'popover';
+    };
     nav: ({
       title: string;
       to: string;
@@ -64,6 +69,7 @@ interface DefaultConfig {
     breadCrumb: boolean;
     showTitle: boolean;
     codeCopyToast: boolean;
+    codeCopyIcon: string;
     codeCopyToastText: string;
     fieldRequiredText: string;
     padded: boolean;
@@ -74,6 +80,7 @@ interface DefaultConfig {
       icon: string;
       placement: ('docsFooter' | 'toc')[];
     };
+    backToTop: boolean;
     pm: ('npm' | 'pnpm' | 'bun' | 'yarn')[];
     codeIcon: {
       [key: string]: string;
@@ -91,6 +98,7 @@ interface DefaultConfig {
   toc: {
     enable: boolean;
     enableInMobile: boolean;
+    enableInHomepage: boolean;
     title: string;
     links: ({
       title: string;
@@ -99,9 +107,17 @@ interface DefaultConfig {
       target: string;
       showLinkIcon: boolean;
     })[];
+    iconLinks: ({
+      icon: string;
+      to: string;
+      target: string;
+    })[];
     carbonAds: {
       enable: boolean;
       disableInDev: boolean;
+      disableInMobile: boolean;
+      fallback: boolean;
+      fallbackMessage: string;
       code: string;
       placement: string;
       format: 'cover' | 'responsive';
@@ -113,6 +129,9 @@ interface DefaultConfig {
     style: 'input' | 'button';
     placeholder: string;
     placeholderDetailed: string;
+  };
+  data?: {
+    [key: string]: any;
   };
 }
 
@@ -132,9 +151,16 @@ type Color =
 
 type Target = '_blank' | '_parent' | '_self' | '_top' | (string & object) | null | undefined;
 
+type FileTreeItemDiff = 'addition' | 'deletion' | 'none';
 interface FileTreeItem {
   title: string;
   icon?: string;
   children?: FileTreeItem[];
   highlighted: boolean;
+  diff: FileTreeItemDiff;
+  path?: string;
 }
+
+type InputTreeItem = string | {
+  [key: string]: InputTreeItem[];
+};

@@ -7,7 +7,7 @@
       <span>{{ title }}</span>
     </div>
 
-    <div class="w-auto bg-muted/30 p-2">
+    <div class="bg-muted/30 w-auto p-2">
       <FileTreeRoot :tree="parsedTree" :show-arrow :show-icon :level="0" />
     </div>
   </UiCard>
@@ -53,11 +53,18 @@ function getItem(key: string, type: 'folder' | 'file', children?: InputTreeItem[
     highlighted = true;
   }
 
+  let diff: FileTreeItemDiff = 'none';
+  if (title.startsWith('+'))
+    diff = 'addition';
+  else if (title.startsWith('-'))
+    diff = 'deletion';
+
   if (type === 'file') {
     return {
       title,
       icon: getIcon(title, 'file'),
       highlighted,
+      diff,
     };
   } else {
     return {
@@ -65,6 +72,7 @@ function getItem(key: string, type: 'folder' | 'file', children?: InputTreeItem[
       icon: getIcon(title, 'folder'),
       children: children && getTree(children),
       highlighted,
+      diff,
     };
   }
 }

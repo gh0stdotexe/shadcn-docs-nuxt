@@ -6,9 +6,9 @@
       <li v-for="link in navigation" :key="link.id">
         <NuxtLink
           :to="link.redirect ?? link._path"
-          class="flex h-8 items-center gap-2 rounded-md p-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary"
+          class="text-foreground/80 hover:bg-muted hover:text-primary flex h-8 items-center gap-2 rounded-md p-2 text-sm"
           :class="[
-            path.startsWith(link._path) && 'bg-muted !text-primary',
+            path.startsWith(link._path) && 'bg-muted !text-primary font-medium',
           ]"
         >
           <SmartIcon
@@ -39,14 +39,14 @@
 defineProps<{ isMobile: boolean }>();
 
 const { navDirFromPath } = useContentHelpers();
-const { navigation } = useContent();
 const config = useConfig();
+const { locale, defaultLocale, navigation } = useI18nDocs();
 
 const tree = computed(() => {
   const route = useRoute();
   const path = route.path.split('/');
   if (config.value.aside.useLevel) {
-    const leveledPath = path.splice(0, 2).join('/');
+    const leveledPath = path.splice(0, locale.value === defaultLocale ? 2 : 3).join('/');
 
     const dir = navDirFromPath(leveledPath, navigation.value);
     return dir ?? [];

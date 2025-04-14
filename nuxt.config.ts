@@ -1,12 +1,12 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@vueuse/nuxt',
     '@nuxt/content',
@@ -14,13 +14,13 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/color-mode',
     'nuxt-og-image',
+    '@nuxt/scripts',
+    '@nuxtjs/i18n',
+    '@nuxt/fonts',
   ],
   shadcn: {
     prefix: 'Ui',
     componentDir: join(currentDir, './components/ui'),
-  },
-  routeRules: {
-    '/': { prerender: true },
   },
   components: {
     dirs: [
@@ -30,12 +30,19 @@ export default defineNuxtConfig({
       },
     ],
   },
+  i18n: {
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
+    strategy: 'prefix_except_default',
+  },
   colorMode: {
     classSuffix: '',
     disableTransition: true,
   },
   css: [
     join(currentDir, './assets/css/themes.css'),
+    '~/assets/css/tailwind.css',
   ],
   content: {
     documentDriven: true,
@@ -44,7 +51,7 @@ export default defineNuxtConfig({
         default: 'github-light',
         dark: 'github-dark',
       },
-      preload: ['json', 'js', 'ts', 'html', 'css', 'vue', 'diff', 'shell', 'markdown', 'yaml', 'bash', 'ini'],
+      preload: ['json', 'js', 'ts', 'html', 'css', 'vue', 'diff', 'shell', 'markdown', 'mdc', 'yaml', 'bash', 'ini', 'dotenv'],
     },
     navigation: {
       fields: [
@@ -58,6 +65,7 @@ export default defineNuxtConfig({
         'editLink',
         'prevNext',
         'breadcrumb',
+        'fullpage',
       ],
     },
     experimental: {
@@ -80,7 +88,15 @@ export default defineNuxtConfig({
     },
   },
   build: {
-    transpile: ['shiki'],
+    transpile: ['shiki', 'ohash'],
+  },
+  vite: {
+    build: {
+      cssMinify: 'lightningcss',
+    },
+    plugins: [
+      tailwindcss(),
+    ],
   },
   compatibilityDate: '2024-07-05',
 });

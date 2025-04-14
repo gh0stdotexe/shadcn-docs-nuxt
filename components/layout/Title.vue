@@ -1,9 +1,9 @@
 <template>
-  <div class="mb-6">
+  <div class="mb-8">
     <ProseH1>
       {{ title }}
     </ProseH1>
-    <p class="pt-1 text-lg text-muted-foreground">
+    <p class="text-muted-foreground pt-1 text-lg">
       {{ description }}
     </p>
 
@@ -30,7 +30,7 @@
           <div class="text-sm font-semibold">
             {{ author.name }}
           </div>
-          <div v-if="author.username" class="text-xs font-medium leading-4 text-muted-foreground">
+          <div v-if="author.username" class="text-muted-foreground text-xs font-medium leading-4">
             @{{ author.username }}
           </div>
         </div>

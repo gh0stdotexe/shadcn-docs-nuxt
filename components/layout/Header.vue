@@ -1,6 +1,6 @@
 <template>
   <header
-    class="sticky top-0 z-40 bg-background/80 backdrop-blur-lg"
+    class="bg-background/80 sticky top-0 z-40 backdrop-blur-lg"
     :class="{ 'lg:border-b': config.header.border }"
   >
     <div
@@ -15,12 +15,13 @@
         <LayoutSearchButton v-if="!config.search.inAside && config.search.style === 'input'" />
         <div class="flex">
           <LayoutSearchButton v-if="!config.search.inAside && config.search.style === 'button'" />
+          <LangSwitcher v-if="i18nEnabled" />
           <ThemePopover v-if="config.theme.customizable" />
           <DarkModeToggle v-if="config.header.darkModeToggle" />
           <NuxtLink
             v-for="(link, i) in config.header.links"
             :key="i"
-            :to="link?.to"
+            :to="localePath(link?.to)"
             :target="link?.target"
           >
             <UiButton variant="ghost" size="icon" class="flex gap-2">
@@ -30,7 +31,7 @@
         </div>
       </div>
     </div>
-    <div v-if="config.toc.enable && config.toc.enableInMobile" class="lg:hidden">
+    <div v-if="showToc" class="lg:hidden">
       <LayoutToc is-small />
     </div>
   </header>
@@ -38,4 +39,12 @@
 
 <script setup lang="ts">
 const config = useConfig();
+const { i18nEnabled, localePath } = useI18nDocs();
+const { page } = useContent();
+
+const showToc = computed(() => {
+  return config.value.toc.enable
+    && config.value.toc.enableInMobile
+    && (page.value?._path === '/' ? config.value.toc.enableInHomepage : true);
+});
 </script>
