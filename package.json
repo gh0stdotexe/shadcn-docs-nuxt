@@ -73,7 +73,7 @@
     "@vueuse/nuxt": "^12.5.0",
     "eslint": "^9.19.0",
     "eslint-plugin-tailwindcss": "^3.18.0",
-    "shiki": "^2.1.0",
+    "shiki": "^3.2.1",
     "vue-tsc": "^2.2.0"
   }
 }
