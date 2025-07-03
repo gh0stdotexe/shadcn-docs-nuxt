@@ -6,9 +6,9 @@ navigation: false
 ::hero
 ---
 announcement:
-  title: 'Code Tree Component'
-  icon: lucide:folder-code
-  to: /components/docs/code-tree
+  title: 'v1.1 release'
+  icon: '🎉'
+  to: /blog/v1-1
 actions:
   - name: Get Started
     to: /getting-started/introduction

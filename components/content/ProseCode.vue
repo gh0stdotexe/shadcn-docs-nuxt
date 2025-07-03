@@ -1,6 +1,6 @@
 <template>
   <UiCard
-    class="bg-muted/30 relative overflow-hidden [&:not(:first-child)]:mt-5 [&:not(:last-child)]:mb-5"
+    class="bg-[#FBFBFB] dark:bg-[#121215] relative overflow-hidden [&:not(:first-child)]:mt-5 [&:not(:last-child)]:mb-5"
     :class="[
       (inGroup || inTree) && 'mb-0 rounded-t-none border-none shadow-none',
       inStack && 'mb-0 rounded-none border-none shadow-none',
@@ -16,7 +16,7 @@
       <CodeCopy :code />
     </div>
 
-    <div v-if="parsedMeta.has('collapse')">
+    <UiScrollArea v-if="parsedMeta.has('collapse')">
       <div
         :style="[((parsedMeta.has('height') || height) && !expanded) ? `height: ${height || parsedMeta.get('height')}px` : undefined]"
         class="overflow-x-auto overflow-y-hidden py-3 text-sm"
@@ -29,7 +29,8 @@
       >
         <slot />
       </div>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </UiScrollArea>
     <UiScrollArea v-else :style="[(parsedMeta.has('height') || height) && `height: ${height || parsedMeta.get('height')}px`]">
       <div
         class="overflow-x-auto py-3 text-sm"
@@ -116,7 +117,8 @@ const icon = computed(() => {
   background-color: hsl(var(--muted));
 }
 
-.shiki .line {
+.shiki .line,
+.language-text {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
 }

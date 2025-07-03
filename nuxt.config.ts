@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   modules: [
     'shadcn-nuxt',
     '@vueuse/nuxt',
-    '@nuxt/content',
+    '@ztl-uwu/nuxt-content',
     '@nuxt/image',
     '@nuxt/icon',
     '@nuxtjs/color-mode',
@@ -80,6 +80,11 @@ export default defineNuxtConfig({
       sizeLimitKb: 512,
     },
   },
+  fonts: {
+    defaults: {
+      weights: ['300 800'],
+    },
+  },
   typescript: {
     tsConfig: {
       compilerOptions: {
@@ -87,16 +92,13 @@ export default defineNuxtConfig({
       },
     },
   },
-  build: {
-    transpile: ['shiki', 'ohash'],
-  },
   vite: {
-    build: {
-      cssMinify: 'lightningcss',
-    },
     plugins: [
       tailwindcss(),
     ],
+    optimizeDeps: {
+      include: ['debug'],
+    },
   },
-  compatibilityDate: '2024-07-05',
+  compatibilityDate: '2025-05-13',
 });

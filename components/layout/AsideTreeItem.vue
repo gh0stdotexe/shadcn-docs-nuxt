@@ -37,7 +37,7 @@
       </template>
     </div>
     <!-- Page -->
-    <NuxtLink
+    <NuxtLinkLocale
       v-else
       :to="link._path"
       class="text-foreground/80 hover:bg-muted hover:text-primary flex items-center gap-2 rounded-md p-2 text-sm"
@@ -47,12 +47,12 @@
       ]"
     >
       <LayoutAsideTreeItemButton :link />
-    </NuxtLink>
+    </NuxtLinkLocale>
   </li>
 </template>
 
 <script setup lang="ts">
-import type { NavItem } from '@nuxt/content';
+import type { NavItem } from '@ztl-uwu/nuxt-content';
 
 const { link, level } = defineProps<{
   link: NavItem;

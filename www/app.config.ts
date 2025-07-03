@@ -32,6 +32,7 @@ export default defineAppConfig({
         light: '/logo.svg',
         dark: '/logo-dark.svg',
       },
+      border: false,
       darkModeToggle: true,
       languageSwitcher: {
         enable: true,
@@ -81,10 +82,10 @@ export default defineAppConfig({
           target: '_blank',
         }],
       }, {
-        title: 'Use This Template',
-        to: '/getting-started/installation',
+        title: 'Blog',
+        to: '/blog',
         target: '_self',
-        showLinkIcon: true,
+        showLinkIcon: false,
       }],
       links: [
         {
@@ -101,18 +102,20 @@ export default defineAppConfig({
     },
     aside: {
       useLevel: true,
+      levelStyle: 'aside',
       collapse: false,
       collapseLevel: 1,
       folderStyle: 'default',
     },
     main: {
+      padded: true,
       breadCrumb: true,
       showTitle: true,
-      codeCopyToast: true,
+      codeCopyToast: false,
       codeCopyIcon: 'lucide:clipboard',
       editLink: {
         enable: true,
-        pattern: 'https://github.com/ZTL-UwU/shadcn-docs-nuxt/edit/main/content/:path',
+        pattern: 'https://github.com/ZTL-UwU/shadcn-docs-nuxt/edit/main/www/content/:path',
         text: 'Edit this page',
         icon: 'lucide:square-pen',
         placement: ['docsFooter'],
@@ -158,7 +161,7 @@ export default defineAppConfig({
         'npx': 'vscode-icons:file-type-npm',
         'yarn': 'vscode-icons:file-type-yarn',
         'bun': 'vscode-icons:file-type-bun',
-        'yml': 'vscode-icons:file-type-yaml',
+        'yml': 'vscode-icons:file-type-light-yaml',
         'json': 'vscode-icons:file-type-json',
         'terminal': 'lucide:terminal',
       },
@@ -196,7 +199,7 @@ export default defineAppConfig({
     },
     toc: {
       enable: true,
-      enableInMobile: false,
+      enableInMobile: true,
       enableInHomepage: false,
       title: 'On this page',
       links: [

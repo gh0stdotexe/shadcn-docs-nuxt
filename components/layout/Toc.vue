@@ -2,10 +2,15 @@
   <UiScrollArea
     v-if="!isSmall"
     orientation="vertical"
-    class="z-30 hidden h-[calc(100vh-6.5rem)] overflow-y-auto md:block lg:block"
+    class="z-30 hidden overflow-y-auto md:block lg:block"
     type="hover"
   >
-    <div class="flex h-[calc(100vh-6.5rem)] flex-col gap-5">
+    <div
+      class="flex flex-col gap-5"
+      :class="[
+        (config.aside.useLevel && config.aside.levelStyle === 'aside') ? 'h-[calc(100vh-6.5rem)]' : 'h-[calc(100vh-10rem)]',
+      ]"
+    >
       <div v-if="toc?.links.length">
         <p class="mb-2 text-base font-semibold">
           {{ $t(title) }}
@@ -17,7 +22,7 @@
         />
       </div>
       <div v-if="links.length" class="text-muted-foreground" :class="[iconLinks?.length && 'border-b pb-5']">
-        <NuxtLink
+        <NuxtLinkLocale
           v-for="(link, i) in links"
           :key="i"
           :to="localePath(link.to)"
@@ -31,10 +36,10 @@
           />
           {{ $t(link.title) }}
           <Icon v-if="link.showLinkIcon ?? (link.target === '_blank')" name="lucide:arrow-up-right" class="text-muted-foreground ml-auto self-center" size="13" />
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
       <div v-if="iconLinks" class="text-muted-foreground">
-        <NuxtLink
+        <NuxtLinkLocale
           v-for="(link, i) in iconLinks"
           :key="i"
           :to="localePath(link.to)"
@@ -46,7 +51,7 @@
               :name="link.icon"
             />
           </UiButton>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
       <div class="flex-grow" />
       <LayoutCarbonAds v-if="isDesktop && carbonAdsEnabled" />
@@ -56,10 +61,9 @@
     v-else
     v-model:open="isOpen"
     class="block w-full text-sm lg:hidden"
-    :class="{ 'border-b': border }"
   >
-    <UiCollapsibleTrigger class="flex w-full px-4 py-3 text-left font-medium">
-      {{ title }}
+    <UiCollapsibleTrigger class="flex w-full px-4 md:px-8 py-3 text-left font-medium">
+      {{ $t(title) }}
       <Icon
         name="lucide:chevron-right"
         class="ml-auto self-center transition-all"
@@ -74,6 +78,7 @@
 
 <script setup lang="ts">
 defineProps<{ isSmall: boolean }>();
+const config = useConfig();
 
 const { toc } = useContent();
 const { localePath } = useI18nDocs();
@@ -84,7 +89,6 @@ const carbonAdsEnabled = computed(
   () => carbonAds.enable && !(import.meta.dev && carbonAds.disableInDev),
 );
 
-const { border } = useConfig().value.header;
 const isOpen = ref(false);
 
 const { url, enabledToc, text, icon } = useEditLink();
